@@ -1,9 +1,14 @@
-import { type NextRequest } from 'next/server'
+// app/sitemap.ts
+import type { MetadataRoute } from 'next';
 
-export function GET(_req: NextRequest) {
-  const body = `User-agent: *
-Allow: /
-Sitemap: https://www.themrburger.com/sitemap.xml
-`
-  return new Response(body, { headers: { 'Content-Type': 'text/plain' } })
+export default function sitemap(): MetadataRoute.Sitemap {
+  const base = 'https://www.themrburger.com';
+  const now = new Date();
+
+  return [
+    { url: `${base}/`, lastModified: now, changeFrequency: 'weekly', priority: 1 },
+    { url: `${base}/#menu`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${base}/#locations`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${base}/#about`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 }
+  ];
 }
