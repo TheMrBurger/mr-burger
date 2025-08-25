@@ -1,0 +1,10 @@
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { height: 100%; background:#0a0a0a; color:#fff; }
+a { @apply underline-offset-2; }
+.btn { @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition disabled:opacity-50; }
+.btn-primary { @apply bg-brand-red text-white hover:opacity-90; }
+.card { @apply rounded-2xl bg-brand-gray/70 ring-1 ring-white/10 backdrop-blur p-6; }
