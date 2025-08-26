@@ -1,22 +1,9 @@
-// tailwind.config.ts
-import type { Config } from 'tailwindcss'
-
-const config: Config = {
-  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
-  theme: {
-    extend: {
-      colors: {
-        brand: {
-          bg: '#0a0a0a',
-          dark: '#121212',
-          red: '#E3262E'
-        }
-      },
-      fontFamily: {
-        sans: ['system-ui', 'Segoe UI', 'Inter', 'Roboto', 'Arial', 'sans-serif']
-      }
+extend: {
+  colors: {
+    brand: {
+      red: '#E3262E',
+      gray: '#f5f5f5' // light gray for cards/sections if you want contrast
     }
   },
-  plugins: []
+  fontFamily: { sans: ['system-ui','Segoe UI','Inter','Roboto','Arial','sans-serif'] }
 }
-export default config
