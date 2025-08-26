@@ -3,6 +3,5 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   images: { formats: ['image/avif', 'image/webp'] }
-  // remove experimental.optimizeCss
-};
-export default nextConfig;
+}
+export default nextConfig

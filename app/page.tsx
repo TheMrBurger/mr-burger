@@ -1,4 +1,3 @@
-// app/page.tsx
 import Hero from '@/components/Hero'
 import PromoBar from '@/components/PromoBar'
 import Menu from '@/components/Menu'
