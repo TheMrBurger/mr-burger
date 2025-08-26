@@ -5,8 +5,8 @@ import Image from 'next/image'
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [failedAutoPlay, setFailedAutoPlay] = useState(false)
-  const [showVideo, setShowVideo] = useState(true) // if decode error, we’ll swap to image
+  const [needPlayButton, setNeedPlayButton] = useState(false)
+  const [fallbackImage, setFallbackImage] = useState(false)
 
   useEffect(() => {
     const v = videoRef.current
@@ -14,23 +14,22 @@ export default function Hero() {
 
     // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setFailedAutoPlay(true)
+      setNeedPlayButton(true)
       return
     }
 
-    // Some browsers need a programmatic kick
-    const tryPlay = async () => {
+    // Ensure required attrs before attempting play
+    v.muted = true
+    v.playsInline = true
+
+    const kick = async () => {
       try {
-        // Ensure attributes exist before calling play
-        v.muted = true
-        v.playsInline = true
         await v.play()
       } catch {
-        setFailedAutoPlay(true)
+        setNeedPlayButton(true)
       }
     }
-
-    tryPlay()
+    kick()
   }, [])
 
   const handleManualPlay = async () => {
@@ -40,17 +39,16 @@ export default function Hero() {
       v.muted = true
       v.playsInline = true
       await v.play()
-      setFailedAutoPlay(false)
+      setNeedPlayButton(false)
     } catch {
-      // If it still fails, keep the overlay button
+      // If still blocked, we’ll keep the button visible
     }
   }
 
   return (
     <section aria-labelledby="hero-heading" className="relative min-h-[60vh]">
-      {/* Background media */}
       <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-        {showVideo ? (
+        {!fallbackImage ? (
           <video
             ref={videoRef}
             className="w-full h-full object-cover"
@@ -58,15 +56,13 @@ export default function Hero() {
             loop
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
             poster="/images/hero.jpg"
-            onError={() => setShowVideo(false)}
-            // prevent accidental tap-pauses on mobile
-            style={{ pointerEvents: 'none' }}
+            onError={() => setFallbackImage(true)}
+            style={{ pointerEvents: 'none' }} // avoid tap-pausing on mobile
           >
+            <source src="/vid/Flame-on.webm" type="video/webm" />
             <source src="/vid/Flame-on.mp4" type="video/mp4" />
-            {/* Optional second format if you add it later */}
-            {/* <source src="/vid/Flame-on.webm" type="video/webm" /> */}
             Your browser does not support the video tag.
           </video>
         ) : (
@@ -75,8 +71,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black/55" />
       </div>
 
-      {/* Manual play overlay if autoplay was blocked */}
-      {failedAutoPlay && showVideo && (
+      {needPlayButton && !fallbackImage && (
         <div className="absolute inset-0 z-10 grid place-items-center">
           <button
             onClick={handleManualPlay}
@@ -88,7 +83,6 @@ export default function Hero() {
         </div>
       )}
 
-      {/* Hero text */}
       <div className="relative mx-auto max-w-7xl px-4 py-24 md:py-36">
         <h1 id="hero-heading" className="text-4xl md:text-6xl font-extrabold leading-tight">
           Real burgers. Made fresh. No shortcuts.
