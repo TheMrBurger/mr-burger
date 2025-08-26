@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [needPlayButton, setNeedPlayButton] = useState(false)
+  const [needPlay, setNeedPlay] = useState(false)
   const [fallbackImage, setFallbackImage] = useState(false)
 
   useEffect(() => {
@@ -14,22 +14,29 @@ export default function Hero() {
 
     // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setNeedPlayButton(true)
+      setNeedPlay(true)
       return
     }
 
-    // Ensure required attrs before attempting play
+    // Ensure attributes before first paint
     v.muted = true
     v.playsInline = true
 
     const kick = async () => {
       try {
         await v.play()
+        setNeedPlay(false)
       } catch {
-        setNeedPlayButton(true)
+        setNeedPlay(true)
       }
     }
+
+    // Try on load events too (Chrome sometimes needs it)
+    const onLoaded = () => { kick() }
+    v.addEventListener('loadeddata', onLoaded)
     kick()
+
+    return () => v.removeEventListener('loadeddata', onLoaded)
   }, [])
 
   const handleManualPlay = async () => {
@@ -39,9 +46,9 @@ export default function Hero() {
       v.muted = true
       v.playsInline = true
       await v.play()
-      setNeedPlayButton(false)
+      setNeedPlay(false)
     } catch {
-      // If still blocked, we’ll keep the button visible
+      // If it still fails, button stays visible
     }
   }
 
@@ -59,9 +66,9 @@ export default function Hero() {
             preload="metadata"
             poster="/images/hero.jpg"
             onError={() => setFallbackImage(true)}
-            style={{ pointerEvents: 'none' }} // avoid tap-pausing on mobile
+            style={{ pointerEvents: 'none' }}
           >
-            <source src="/vid/Flame-on.webm" type="video/webm" />
+            {/* MP4 only for now */}
             <source src="/vid/Flame-on.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
@@ -71,7 +78,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black/55" />
       </div>
 
-      {needPlayButton && !fallbackImage && (
+      {needPlay && !fallbackImage && (
         <div className="absolute inset-0 z-10 grid place-items-center">
           <button
             onClick={handleManualPlay}
