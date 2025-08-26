@@ -12,13 +12,11 @@ export default function Hero() {
     const v = videoRef.current
     if (!v) return
 
-    // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setNeedPlay(true)
       return
     }
 
-    // Ensure attributes before first paint
     v.muted = true
     v.playsInline = true
 
@@ -31,11 +29,9 @@ export default function Hero() {
       }
     }
 
-    // Try on load events too (Chrome sometimes needs it)
     const onLoaded = () => { kick() }
     v.addEventListener('loadeddata', onLoaded)
     kick()
-
     return () => v.removeEventListener('loadeddata', onLoaded)
   }, [])
 
@@ -47,9 +43,7 @@ export default function Hero() {
       v.playsInline = true
       await v.play()
       setNeedPlay(false)
-    } catch {
-      // If it still fails, button stays visible
-    }
+    } catch {}
   }
 
   return (
@@ -68,8 +62,9 @@ export default function Hero() {
             onError={() => setFallbackImage(true)}
             style={{ pointerEvents: 'none' }}
           >
-            {/* MP4 only for now */}
-            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+            <source src="/vid/Flame-on.mp4" type="video/mp4" />
+            {/* add WebM after you actually upload it:
+            <source src="/vid/Flame-on.webm" type="video/webm" /> */}
             Your browser does not support the video tag.
           </video>
         ) : (
