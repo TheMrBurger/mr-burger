@@ -25,7 +25,7 @@ export default function Hero() {
           Real burgers. Made fresh. No shortcuts.
         </h1>
         <p className="mt-4 text-lg md:text-xl text-white/95">
-          Proudly serving San Bernardino — real burgers, made fresh, no shortcuts.
+          Proudly serving San Bernardino — Real Burgers, Made Fresh, No Shortcuts.
         </p>
         <div className="mt-8 flex gap-3">
           <a href="#menu" className="btn btn-primary no-underline">View menu</a>

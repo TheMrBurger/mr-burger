@@ -1,10 +1,39 @@
-/* app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body { height: 100%; background:#0a0a0a; color:#fff; }
-a { @apply underline-offset-2; }
+html { scroll-behavior: smooth; }
+html, body { height: 100%; background:#0a0a0a; color:#fff; font-family: theme('fontFamily.sans'); }
+
+/* Ensure visible focus for keyboard users */
+:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Skip link pattern */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  background: #ffffff;
+  color: #000000;
+  padding: .5rem .75rem;
+  border-radius: .375rem;
+  font-weight: 600;
+  z-index: 10000;
+}
+.skip-link:focus {
+  left: .75rem;
+  top: .75rem;
+}
+
+/* Utility components */
 .btn { @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition disabled:opacity-50; }
 .btn-primary { @apply bg-brand-red text-white hover:opacity-90; }
-.card { @apply rounded-2xl bg-brand-gray/70 ring-1 ring-white/10 backdrop-blur p-6; }
+.btn-outline { @apply border border-white/30 hover:bg-white/10; }
+.card { @apply rounded-2xl bg-brand-dark/70 ring-1 ring-white/10 backdrop-blur p-6; }
+
+/* Ensure link contrast and states */
+a { text-decoration: underline; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }

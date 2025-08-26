@@ -1,23 +1,22 @@
 // tailwind.config.ts
 import type { Config } from 'tailwindcss'
 
-export default {
+const config: Config = {
   content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
         brand: {
           bg: '#0a0a0a',
-          text: '#ffffff',
-          red: '#E3262E',
-          gray: '#1a1a1a'
+          dark: '#121212',
+          red: '#E3262E'
         }
       },
       fontFamily: {
-        sans: ['ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Inter', 'Arial']
+        sans: ['system-ui', 'Segoe UI', 'Inter', 'Roboto', 'Arial', 'sans-serif']
       }
     }
   },
   plugins: []
-} satisfies Config
-
+}
+export default config
