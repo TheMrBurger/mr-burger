@@ -69,7 +69,7 @@ export default function Hero() {
             style={{ pointerEvents: 'none' }}
           >
             {/* MP4 only for now */}
-            <source src="/vid/Flame-on.mp4" type="video/mp4" />
+            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         ) : (
